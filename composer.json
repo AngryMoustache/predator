@@ -1,0 +1,28 @@
+{
+    "name": "angry-moustache/predator",
+    "description": "Connection package for Sylvester",
+    "keywords": [
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "AngryMoustache\\Predator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AngryMoustache\\Predator\\Providers\\PredatorServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
