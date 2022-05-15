@@ -57,10 +57,14 @@ class Predator
      */
     public function store($item, $type = null)
     {
+        $data = optional($item)->toPredator() ?? $item;
+        $result = optional($item)->fromPredator() ?? $data;
+
         return $this->post('store', ['form_params' => [
             'item_type' => $type ?? get_class($item),
             'item_id' => $item->id,
-            'data' => $item->toPredator(),
+            'data' => $data,
+            'result' => $result,
         ]]);
     }
 
