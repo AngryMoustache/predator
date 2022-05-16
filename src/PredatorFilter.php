@@ -40,33 +40,29 @@ class PredatorFilter
      */
     public function where($key, $operator = null, $value = null, $newGroup = true)
     {
+        // Create a new group and set the filters inside
         if ($key instanceof Closure && is_null($operator)) {
             return $key($this);
         }
 
-        if (is_array($key)) {
-            $newGroup = true;
-            foreach ($key as $args) {
-                $this->where(...$args);
-            }
-
-            return $this;
-        }
-
+        // Get the correct operator/value if they are not set
         if ($value === null && $operator !== null) {
             $value = $operator;
             $operator = '=';
         }
 
+        // Normalize collections to arrays
         if ($value instanceof Collection) {
             $value = $value->toArray();
         }
 
+        // Start a new filter group
         if ($newGroup) {
             $this->filters[] = [];
         }
 
-        $this->filters[count($this->filters) - 1][] = [$key, $operator, $value];
+        // Add the filter to the current group
+        $this->filters[count($this->filters) - 1][] = [$key, $operator, json_encode($value)];
 
         return $this;
     }

@@ -81,7 +81,7 @@ class Predator
         return collect($this->post('filter', ['form_params' => [
             'item_type' => $type,
             'weights' => $weights,
-            'filters' => (array) $filters,
+            'filters' => $filters,
         ]]));
     }
 
