@@ -3,6 +3,7 @@
 namespace AngryMoustache\Predator;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 class Predator
@@ -72,14 +73,26 @@ class Predator
      * Fetch a filtered response from the server.
      * @param string $type The item type to filter on
      * @param array $filters The filters to use
+     * @param array $weights The weights to use
      * @return Collection
      */
-    public function filter($type, $filters = [])
+    public function filter($type, $filters = [], $weights = [])
     {
         return collect($this->post('filter', ['form_params' => [
             'item_type' => $type,
-            'filters' => $filters,
+            'weights' => $weights,
+            'filters' => (array) $filters,
         ]]));
+    }
+
+    /**
+     * Start a new filter object.
+     * @param string|array $types The item types to filter on
+     * @return PredatorFilter
+     */
+    public function newFilter($types)
+    {
+        return new PredatorFilter(Arr::wrap($types));
     }
 
     /**
