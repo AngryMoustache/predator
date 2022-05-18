@@ -9,13 +9,13 @@ use Illuminate\Support\Collection;
 
 class PredatorFilter
 {
-    public array $filters;
-    public array $weights;
+    public array $filters = [];
+    public array $weights = [];
+    public array $orderBy = [];
 
     public function __construct(public array $item_type)
     {
-        $this->filters = [];
-        $this->weights = [];
+        //
     }
 
     /**
@@ -80,6 +80,19 @@ class PredatorFilter
     }
 
     /**
+     * Chain to the where filter without creating a new group.
+     * @param string $key Key to sort on
+     * @param string $direction Direction to sort on (asc or desc)
+     * @return PredatorFilter
+     */
+    public function orderBy($key, $direction = 'asc')
+    {
+        $this->orderBy = [$key => $direction];
+
+        return $this;
+    }
+
+    /**
      * Fetch the filter results
      * @return object
      */
@@ -88,7 +101,8 @@ class PredatorFilter
         return Predator::filter(
             $this->item_type,
             $this->filters,
-            $this->weights
+            $this->weights,
+            $this->orderBy
         );
     }
 

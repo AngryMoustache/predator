@@ -76,11 +76,12 @@ class Predator
      * @param array $weights The weights to use
      * @return Collection
      */
-    public function filter($type, $filters = [], $weights = [])
+    public function filter($type, $filters = [], $weights = [], $orderBy = [])
     {
         return collect($this->post('filter', ['form_params' => [
             'item_type' => $type,
             'weights' => $weights,
+            'orderBy' => $orderBy,
             'filters' => $filters,
         ]]));
     }
