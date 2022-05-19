@@ -59,13 +59,17 @@ class Predator
     public function store($item, $type = null)
     {
         $data = optional($item)->toPredator() ?? $item;
-        $result = optional($item)->fromPredator() ?? $data;
+
+        $result = null;
+        if (method_exists($item, 'fromPredator')) {
+            $result = $item->fromPredator();
+        }
 
         return $this->post('store', ['form_params' => [
             'item_type' => $type ?? get_class($item),
             'item_id' => $item->id,
             'data' => $data,
-            'result' => $result,
+            'result' => $result ?? $data,
         ]]);
     }
 
@@ -91,9 +95,9 @@ class Predator
      * @param string|array $types The item types to filter on
      * @return PredatorFilter
      */
-    public function newFilter($types)
+    public function query($types)
     {
-        return new PredatorFilter(Arr::wrap($types));
+        return PredatorFilter::query(Arr::wrap($types));
     }
 
     /**

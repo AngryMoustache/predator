@@ -9,13 +9,17 @@ use Illuminate\Support\Collection;
 
 class PredatorFilter
 {
+    public array $item_type = [];
     public array $filters = [];
     public array $weights = [];
     public array $orderBy = [];
 
-    public function __construct(public array $item_type)
+    public static function query(...$item_type)
     {
-        //
+        $filter = new static;
+        $filter->item_type = $item_type;
+
+        return $filter;
     }
 
     /**
@@ -80,16 +84,26 @@ class PredatorFilter
     }
 
     /**
-     * Chain to the where filter without creating a new group.
+     * Order the results by the given key and direction.
      * @param string $key Key to sort on
      * @param string $direction Direction to sort on (asc or desc)
      * @return PredatorFilter
      */
     public function orderBy($key, $direction = 'asc')
     {
-        $this->orderBy = [$key => $direction];
+        $this->orderBy[$key] = $direction;
 
         return $this;
+    }
+
+    /**
+     * Order the results by the given key in descending order.
+     * @param string $key Key to sort on
+     * @return PredatorFilter
+     */
+    public function orderByDesc($key)
+    {
+        return $this->orderBy($key, 'desc');
     }
 
     /**
