@@ -11,6 +11,7 @@ class PredatorFilter
 {
     public array $item_type = [];
     public array $filters = [];
+    public array $fields = [];
     public array $weights = [];
     public array $orderBy = [];
 
@@ -107,6 +108,19 @@ class PredatorFilter
     }
 
     /**
+     * Order the results by the given key and direction.
+     * @param string $key Key to sort on
+     * @param string $direction Direction to sort on (asc or desc)
+     * @return PredatorFilter
+     */
+    public function fields(...$fields)
+    {
+        $this->fields = Arr::flatten($fields);
+
+        return $this;
+    }
+
+    /**
      * Fetch the filter results
      * @return object
      */
@@ -116,7 +130,8 @@ class PredatorFilter
             $this->item_type,
             $this->filters,
             $this->weights,
-            $this->orderBy
+            $this->orderBy,
+            $this->fields
         );
     }
 

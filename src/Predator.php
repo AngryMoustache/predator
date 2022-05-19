@@ -60,16 +60,10 @@ class Predator
     {
         $data = optional($item)->toPredator() ?? $item;
 
-        $result = null;
-        if (method_exists($item, 'fromPredator')) {
-            $result = $item->fromPredator();
-        }
-
         return $this->post('store', ['form_params' => [
             'item_type' => $type ?? get_class($item),
             'item_id' => $item->id,
             'data' => $data,
-            'result' => $result ?? $data,
         ]]);
     }
 
@@ -78,15 +72,18 @@ class Predator
      * @param string $type The item type to filter on
      * @param array $filters The filters to use
      * @param array $weights The weights to use
+     * @param array $orderBy The ordering to use
+     * @param array $weights The fields to return
      * @return Collection
      */
-    public function filter($type, $filters = [], $weights = [], $orderBy = [])
+    public function filter($type, $filters = [], $weights = [], $orderBy = [], $fields = [])
     {
         return collect($this->post('filter', ['form_params' => [
             'item_type' => $type,
             'weights' => $weights,
             'orderBy' => $orderBy,
             'filters' => $filters,
+            'fields' => $fields,
         ]]));
     }
 
