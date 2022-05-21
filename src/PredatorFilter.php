@@ -15,6 +15,11 @@ class PredatorFilter
     public array $weights = [];
     public array $orderBy = [];
 
+    /**
+     * Start a new query
+     * @param array|string $item_type Te item types to return
+     * @return PredatorFilter
+     */
     public static function query(...$item_type)
     {
         $filter = new static;
@@ -121,7 +126,7 @@ class PredatorFilter
     }
 
     /**
-     * Fetch the filter results
+     * Fetch the filter results with count
      * @return object
      */
     public function get()
@@ -133,6 +138,15 @@ class PredatorFilter
             $this->orderBy,
             $this->fields
         );
+    }
+
+    /**
+     * Fetch the filter results
+     * @return \Illuminate\Support\Collection
+     */
+    public function results()
+    {
+        return collect($this->get()['results']);
     }
 
     /**
