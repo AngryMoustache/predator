@@ -88,6 +88,18 @@ class Predator
     }
 
     /**
+     * Remove all data of a certain type
+     * @param string $type The item type to truncate
+     * @return Collection
+     */
+    public function truncate($type)
+    {
+        return collect($this->post('truncate', ['form_params' => [
+            'item_type' => $type,
+        ]]));
+    }
+
+    /**
      * Start a new filter object.
      * @param string|array $types The item types to filter on
      * @return PredatorFilter
