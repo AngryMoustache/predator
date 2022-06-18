@@ -90,6 +90,17 @@ class PredatorFilter
     }
 
     /**
+     * Only do a thing if the condition is true.
+     * @param boolean $condition
+     * @param callback $callback
+     * @return PredatorFilter
+     */
+    public function when($condition, $callback)
+    {
+        return ($condition) ? $callback($this) : $this;
+    }
+
+    /**
      * Order the results by the given key and direction.
      * @param string $key Key to sort on
      * @param string $direction Direction to sort on (asc or desc)
