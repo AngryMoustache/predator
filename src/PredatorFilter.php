@@ -78,6 +78,22 @@ class PredatorFilter
     }
 
     /**
+     * Check if an array contains a certain value.
+     * @param string $key Filter key
+     * @param array $value Filter value
+     * @return PredatorFilter
+     */
+    public function whereIn($key, $value)
+    {
+        return $this->where(function ($query) use ($key, $value) {
+            $query = $query->where('1', '1');
+            collect($value)->each(fn ($i) => $query = $query->orWhere($key, $i));
+
+            return $query;
+        });
+    }
+
+    /**
      * Chain to the where filter without creating a new group.
      * @param mixed $key Filter key
      * @param mixed $operator Filter operator
